@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-01-17T12:50:52.873826Z",
+    "user": "minikube-user",
+    "impersonated": null,
+    "verb": "create",
+    "namespace": "secure-ops",
+    "resource": "pods",
+    "subresource": null,
+    "status": 201
+  },
+  {
+    "timestamp": "2026-01-17T12:50:53.237560Z",
+    "user": "minikube-user",
+    "impersonated": null,
+    "verb": "create",
+    "namespace": "secure-ops",
+    "resource": "pods",
+    "subresource": null,
+    "status": 201
+  },
+  {
+    "timestamp": "2026-01-17T12:50:53.459595Z",
+    "user": "minikube-user",
+    "impersonated": null,
+    "verb": "create",
+    "namespace": "secure-ops",
+    "resource": "rolebindings",
+    "subresource": null,
+    "status": 201
+  }
+]
