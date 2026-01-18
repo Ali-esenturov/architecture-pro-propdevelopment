@@ -1,0 +1,39 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8srunasnonroot
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRunAsNonRoot
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srunasnonroot
+
+        # Pod-level runAsUser check
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Pod"
+          podSC := input.review.object.spec.securityContext
+          podSC.runAsUser == 0
+          msg := sprintf("pod-level runAsUser=0 is not allowed", [])
+        }
+
+        # Container-level runAsUser check
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Pod"
+          container := input.review.object.spec.containers[_]
+          cSC := container.securityContext
+          cSC.runAsUser == 0
+          msg := sprintf("container-level runAsUser=0 is not allowed: %v", [container.name])
+        }
+
+        # Container-level readOnlyRootFilesystem check
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Pod"
+          container := input.review.object.spec.containers[_]
+          cSC := container.securityContext
+          cSC.readOnlyRootFilesystem != true
+          msg := sprintf("readOnlyRootFilesystem must be true: %v", [container.name])
+        }
